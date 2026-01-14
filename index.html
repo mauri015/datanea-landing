@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="assets/favicon.png" sizes="32x32">
+<link rel="icon" type="image/png" href="assets/favicon.png" sizes="16x16">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="icon" href="assets/favicon.ico">
+
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>dataNEA | Analítica & Reportes</title>
+  <meta name="description" content="dataNEA: reportes claros para tomar mejores decisiones con datos." />
+
+  <style>
+    :root{
+      --bg:#050A18;
+      --bg2:#07122E;
+      --card: rgba(255,255,255,.06);
+      --line: rgba(255,255,255,.12);
+      --text:#EAF0FF;
+      --muted: rgba(234,240,255,.72);
+      --blue:#3B82F6;
+      --blue2:#60A5FA;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,.18), transparent 60%),
+                  radial-gradient(1000px 500px at 80% 20%, rgba(96,165,250,.14), transparent 60%),
+                  radial-gradient(900px 500px at 50% 90%, rgba(59,130,246,.12), transparent 60%),
+                  linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Fondo animado */
+    #bg{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    /* Nav */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:50;
+  backdrop-filter: blur(14px);
+  background: linear-gradient(to bottom, rgba(5,10,24,.75), rgba(5,10,24,.28));
+  border-bottom:1px solid var(--line);
+}
+
+.nav-inner{
+  max-width:1100px;
+  margin:0 auto;
+  height: 60px;          /* <- altura fija del navbar (probá 60/64/68) */
+  padding: 0 18px;       /* <- sin padding vertical */
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+
+/* Brand */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--text);
+}
+
+.nav-logo{
+  height: calc(80px - 5px);  /* <- casi toda la altura (dejá bordes finos) */
+  width: auto;
+  max-width: 260px;           /* <- límite para que no empuje los botones */
+  display:block;
+  object-fit: contain;
+  padding: 0px 0;             /* <- bordes finitos arriba/abajo */
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.30));
+}
+
+.brand strong{ letter-spacing:.2px; }
+
+/* Links */
+.nav-links{
+  display:flex; gap:10px; flex-wrap:wrap;
+  align-items:center; justify-content:flex-end;
+}
+
+.pill{
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background: rgba(255,255,255,.04);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  cursor:pointer;
+  color: var(--muted);
+  text-decoration:none;
+  font-size: 14px;
+}
+
+.pill:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.18);
+  color: var(--text);
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .nav-logo{ height: 18px; max-width: 130px; }
+}
+
+    /* Layout */
+    .wrap{ max-width:1100px; margin:0 auto; padding: 26px 18px 70px; }
+    .hero{
+      padding: 34px 0 18px;
+      display:grid;
+      grid-template-columns: 1fr; /* antes eran 2 columnas: ahora 1 */
+      gap: 14px;
+      align-items:stretch;
+      justify-items:center; /* centra el card */
+    }
+
+    .card{
+      width: min(820px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card-inner{ padding: 22px; text-align:center; } /* centrado */
+
+    .kicker{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 8px 12px;
+      border-radius:999px;
+      background: rgba(59,130,246,.12);
+      border: 1px solid rgba(59,130,246,.28);
+      color: rgba(234,240,255,.92);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: 40px;
+      line-height: 1.08;
+      letter-spacing: -.6px;
+    }
+    @media (max-width: 480px){
+      h1{ font-size: 34px; }
+    }
+
+    .sub{
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    .cta-row{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content:center; /* centra botones */
+    }
+    .btn{
+      border:none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 650;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      text-decoration:none;
+      user-select:none;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      color:#071124;
+      box-shadow: 0 12px 32px rgba(59,130,246,.22);
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+
+    /* Sections */
+    .section{ margin-top: 16px; padding-top: 8px; }
+    .section h2{
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: -.2px;
+    }
+
+    .grid{
+      display:grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
+
+    .feature{
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .feature:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.18);
+    }
+    .feature h3{ margin: 0 0 6px; font-size: 15px; }
+    .feature p{ margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+    .projects{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 900px){ .projects{ grid-template-columns: 1fr; } }
+
+    .proj{
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .proj p{ margin: 8px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+    .tag{
+      font-size: 12px;
+      color: rgba(234,240,255,.92);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      outline:none;
+    }
+    .tiny{ font-size: 12.5px; }
+    .muted{ color: var(--muted); }
+
+    footer{
+      margin-top: 20px;
+      color: rgba(234,240,255,.55);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(7,17,36,.85);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 100;
+      font-size: 13px;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-3px);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+
+<header class="nav">
+  <div class="nav-inner">
+<a class="brand" href="#top">
+  <img class="nav-logo" src="assets/Adobe Express - file.png" alt="Logo dataNEA" />
+</a>
+
+
+
+      <nav class="nav-links">
+        <a class="pill" href="#sobre-mi">Sobre mí</a>
+        <a class="pill" href="#por-que">Por qué datos</a>
+        <a class="pill" href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <section class="hero">
+      <div class="card">
+        <div class="card-inner">
+          <div class="kicker">📊 dataNEA · Reportes claros · Decisiones mejores</div>
+          <h1>Analítica simple que te ayuda a vender mejor</h1>
+        <p class="sub">
+  Soy <strong>Mauricio  Solís</strong>, estudiante de <strong>Licenciatura en Sistemas de la Información</strong> en la
+  <strong>UNNE (Universidad Nacional del Nordeste)</strong>. Soy apasionado por la tecnología y el análisis de datos, en dataNEA me enfoco en convertir
+  datos en informacion clara para <strong>reportes accionables</strong> que ayuden a mejorar
+  ventas, detectar tendencias y tomar mejores decisiones.
+</p>
+
+
+          <div class="cta-row">
+            <a class="btn btn-primary" id="btnWhatsApp" href="https://wa.me/543795672422?text=Hola%20Mauricio!%20%F0%9F%91%8B%20Me%20interesa%20analisis%20de%20datos%2Freportes.%20%C2%BFPodemos%20hablar%3F" target="_blank" rel="noreferrer">💬 WhatsApp</a>
+            <a class="btn btn-ghost" id="btnEmail" href="mailto:maurisalvador094a@outlook.com?subject=Consulta%20-%20dataNEA">✉️ Email</a>
+            <a class="btn btn-ghost" id="btnLinkedIn" href="https://www.linkedin.com/in/mauricio-salvador-solis-679765220/" target="_blank" rel="noreferrer">🔗 LinkedIn</a>
+            <a class="btn btn-ghost" id="btnGitHub" href="https://github.com/mauri015" target="_blank" rel="noreferrer">💻 GitHub</a>
+          </div>
+
+          <p class="tiny muted" style="margin-top:12px;">
+            Si tenés datos en Excel/CSV, ya se puede empezar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre-mi" class="section">
+      <h2>Sobre mí</h2>
+      <div class="grid">
+        <div class="feature">
+          <h3>🧑‍🎓 Formación</h3>
+          <p>Estudiante de Lic. en Sistemas de la Información (UNNE).</p>
+        </div>
+        <div class="feature">
+          <h3>📈 Enfoque</h3>
+          <p>Reportes claros y útiles para tomar decisiones.</p>
+        </div>
+        <div class="feature">
+          <h3>🤝 Objetivo</h3>
+          <p>Que veas rápido qué funciona y qué ajustar para mejorar resultados.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="por-que" class="section">
+      <h2>Por qué es bueno el análisis de datos</h2>
+      <div class="projects">
+        <div class="proj">
+          <strong>Te da claridad</strong>
+          <p>
+            Te ayuda a entender qué vendés más, en qué horarios y qué canal conviene (delivery, salón, takeout, etc.).
+          </p>
+          <div class="row">
+            <span class="tag">Menos intuición</span>
+            <span class="tag">Más evidencia</span>
+            <span class="tag">Decisiones mejores</span>
+          </div>
+        </div>
+
+        <div class="proj">
+          <strong>Qué se puede lograr</strong>
+          <p>
+            Detectar horas pico, controlar descuentos, ver productos estrella y seguir tendencias para ajustar precios y promos.
+          </p>
+          <div class="row">
+            <span class="tag">Hora pico</span>
+            <span class="tag">Top productos</span>
+            <span class="tag">Descuentos</span>
+            <span class="tag">Tendencias</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section">
+      <h2>Contacto</h2>
+      <div class="projects">
+        <div class="proj">
+          <strong>Escribime</strong>
+          <p class="muted tiny">Copiá o abrí directo:</p>
+
+          <input class="input" id="contactEmail" readonly />
+          <div class="row">
+            <button class="btn btn-ghost" type="button" onclick="copyText('contactEmail')">📋 Copiar email</button>
+            <a class="btn btn-ghost" id="btnEmail2" href="#">✉️ Enviar email</a>
+          </div>
+
+          <input class="input" id="contactPhone" readonly />
+          <div class="row">
+            <button class="btn btn-ghost" type="button" onclick="copyText('contactPhone')">📋 Copiar WhatsApp</button>
+            <a class="btn btn-primary" id="btnWhatsApp2" href="#" target="_blank" rel="noreferrer">💬 Abrir WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="proj">
+          <strong>Mensaje listo</strong>
+          <p class="muted tiny">Lo podés mandar tal cual:</p>
+          <textarea class="input" id="waMsg" rows="5"></textarea>
+          <div class="row">
+            <button class="btn btn-ghost" type="button" onclick="copyText('waMsg')">📋 Copiar mensaje</button>
+            <button class="btn btn-primary" type="button" id="btnSendWA">🚀 Enviar por WhatsApp</button>
+          </div>
+          <p class="tiny muted" style="margin-top:12px;">
+            LinkedIn y GitHub están arriba para ver mis trabajos.
+          </p>
+        </div>
+      </div>
+
+      <footer>
+        <span id="footerLeft">© <span id="year"></span> dataNEA</span>
+        <span class="muted">Hecho por Mauricio Solis· dataNEA</span>
+      </footer>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Copiado ✅</div>
+
+  <script>
+    // ==================================================
+    // TUS DATOS
+    // ==================================================
+    const CONFIG = {
+      email: "maurisalvador094a@outlook.com",
+      phoneDisplay: "+543794672422",
+      phoneE164: "+543794672422",
+      linkedin: "https://www.linkedin.com/in/mauricio-salvador-solis-679765220/",
+      github: "https://github.com/mauri015",
+    };
+
+    // Botones
+    const btnWhatsApp = document.getElementById("btnWhatsApp");
+    const btnWhatsApp2 = document.getElementById("btnWhatsApp2");
+    const btnEmail = document.getElementById("btnEmail");
+    const btnEmail2 = document.getElementById("btnEmail2");
+
+    btnEmail.href  = `mailto:${CONFIG.email}?subject=${encodeURIComponent("Consulta - dataNEA")}`;
+    const waQuick = "Hola Mauricio! 👋 Me interesa análisis de datos/reportes. ¿Podemos hablar?";
+    btnWhatsApp.href  = makeWhatsAppLink(CONFIG.phoneE164, waQuick);
+    btnWhatsApp2.href = btnWhatsApp.href;
+
+    document.getElementById("contactEmail").value = CONFIG.email;
+    document.getElementById("contactPhone").value = CONFIG.phoneDisplay;
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("footerLeft").innerHTML = `© ${new Date().getFullYear()} dataNEA Todos los derechos reservados`;
+
+    const waTemplate =
+`Hola Mauricio! 👋
+Vi dataNEA y me interesa tener reportes con mis ventas.
+¿Podemos coordinar para ver una demo o contar qué datos tengo (Excel/CSV)?
+Gracias!`;
+    document.getElementById("waMsg").value = waTemplate;
+
+    document.getElementById("btnSendWA").addEventListener("click", () => {
+      const msg = document.getElementById("waMsg").value.trim();
+      window.open(makeWhatsAppLink(CONFIG.phoneE164, msg), "_blank", "noopener");
+    });
+
+    function makeWhatsAppLink(phoneE164, message){
+      const phone = phoneE164.replace(/[^\d+]/g,'').replace('+','');
+      return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+    }
+
+    // Copy helpers
+    function showToast(text){
+      const t = document.getElementById("toast");
+      t.textContent = text;
+      t.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 1400);
+    }
+    window.copyText = async (id) => {
+      const el = document.getElementById(id);
+      const val = el.value ?? el.textContent ?? "";
+      try{
+        await navigator.clipboard.writeText(val);
+        showToast("Copiado ✅");
+      }catch{
+        const ta = document.createElement("textarea");
+        ta.value = val;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        showToast("Copiado ✅");
+      }
+    };
+  </script>
+
+  <script>
+    // ==================================================
+    // Fondo animado azul oscuro (partículas)
+    // ==================================================
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    let W, H, DPR;
+    const particles = [];
+    const PCOUNT = 95;
+
+    function resize(){
+      DPR = Math.min(2, window.devicePixelRatio || 1);
+      W = canvas.width = Math.floor(window.innerWidth * DPR);
+      H = canvas.height = Math.floor(window.innerHeight * DPR);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function init(){
+      particles.length = 0;
+      for(let i=0;i<PCOUNT;i++){
+        particles.push({
+          x: rand(0,W), y: rand(0,H),
+          vx: rand(-.14,.14)*DPR, vy: rand(-.14,.14)*DPR,
+          r: rand(1.2,2.8)*DPR,
+          a: rand(.18,.70),
+        });
+      }
+    }
+    init();
+
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle = "rgba(5,10,24,0.35)";
+      ctx.fillRect(0,0,W,H);
+
+      const g = ctx.createRadialGradient(W*0.25, H*0.22, 0, W*0.25, H*0.22, W*0.7);
+      g.addColorStop(0, "rgba(59,130,246,.18)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0,0,W,H);
+
+      const g2 = ctx.createRadialGradient(W*0.82, H*0.35, 0, W*0.82, H*0.35, W*0.78);
+      g2.addColorStop(0, "rgba(96,165,250,.12)");
+      g2.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g2;
+      ctx.fillRect(0,0,W,H);
+
+      for(const p of particles){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0) p.x = W; if(p.x>W) p.x = 0;
+        if(p.y<0) p.y = H; if(p.y>H) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(234,240,255,${p.a})`;
+        ctx.fill();
+      }
+
+      for(let i=0;i<particles.length;i++){
+        for(let j=i+1;j<particles.length;j++){
+          const a = particles[i], b = particles[j];
+          const dx = a.x-b.x, dy = a.y-b.y;
+          const dist = Math.sqrt(dx*dx+dy*dy);
+          const max = 125*DPR;
+          if(dist < max){
+            const alpha = (1 - dist/max) * 0.22;
+            ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
+            ctx.lineWidth = 1*DPR;
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  </script>
+</body>
+</html>
