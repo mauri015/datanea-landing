@@ -305,6 +305,72 @@
       opacity: 1;
       transform: translateX(-50%) translateY(-3px);
     }
+    /* Proyectos */
+.projects{ display:flex; flex-direction:column; gap:18px; margin-top:18px; }
+
+.project{
+  display:grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap:18px;
+  padding:16px;
+  border:1px solid var(--line);
+  background: rgba(255,255,255,.04);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+
+.project-media{
+  border-radius: 14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+}
+.project-media img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit: cover;
+  max-height: 360px;
+}
+
+.project-info h3{ margin:0 0 8px; font-size: 18px; }
+.project-info p{ margin:0 0 10px; color: var(--muted); line-height: 1.55; }
+
+.project-bullets{ margin:0; padding-left:18px; line-height:1.55; color: rgba(234,240,255,.78); }
+
+.project-gallery{
+  margin-top: 14px;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:12px;
+}
+.shot{
+  margin:0;
+  border-radius: 14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.12);
+}
+.shot img{
+  width:100%;
+  height: 190px;
+  object-fit: cover;
+  display:block;
+}
+.shot figcaption{
+  padding:8px 10px;
+  font-size: 13px;
+  color: rgba(234,240,255,.70);
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+@media (max-width: 900px){
+  .project{ grid-template-columns: 1fr; }
+  .project-media img{ max-height: 280px; }
+  .project-gallery{ grid-template-columns: 1fr; }
+  .shot img{ height: 220px; }
+}
+
   </style>
 </head>
 
@@ -322,6 +388,7 @@
       <nav class="nav-links">
         <a class="pill" href="#sobre-mi">Sobre mí</a>
         <a class="pill" href="#por-que">Por qué datos</a>
+        <a class="pill" href="#proyectos">Proyectos</a>
         <a class="pill" href="#contacto">Contacto</a>
       </nav>
     </div>
@@ -354,7 +421,6 @@
         </div>
       </div>
     </section>
-
     <section id="sobre-mi" class="section">
       <h2>Sobre mí</h2>
       <div class="grid">
@@ -402,6 +468,70 @@
         </div>
       </div>
     </section>
+<section id="proyectos" class="section">
+  <div class="wrap">
+    <h2 class="section-title">Proyectos</h2>
+    <p class="section-sub">Capturas y resumen de dashboards que armé en Metabase con datos POS.</p>
+
+    <div class="projects">
+
+      <!-- PROYECTO: RESTO GRILL ANALYTICS -->
+      <article class="project">
+        <div class="project-media">
+          <img src="assets/projects/resto-overview.png" alt="Resto Grill Analytics - Dashboard completo" loading="lazy">
+        </div>
+
+        <div class="project-info">
+          <h3>Resto Grill Analytics (Metabase + Postgres)</h3>
+          <p>
+            Dashboard para analizar ventas, impuestos, productos más vendidos y comportamiento por horarios.
+            Enfocado en insights rápidos para mejorar decisiones comerciales.
+          </p>
+
+          <ul class="project-bullets">
+            <li>Ventas netas vs ventas sin impuestos</li>
+            <li>Hora pico (distribución por hora)</li>
+            <li>Top productos más vendidos</li>
+          </ul>
+
+          <div class="project-gallery">
+            <figure class="shot">
+              <img src="assets/projects/resto-hora-pico.png" alt="Hora pico" loading="lazy">
+              <figcaption>Hora pico</figcaption>
+            </figure>
+
+            <figure class="shot">
+              <img src="assets/projects/resto-impuestos.png" alt="Impuestos totales" loading="lazy">
+              <figcaption>Impuestos totales</figcaption>
+            </figure>
+
+            <figure class="shot">
+              <img src="assets/projects/resto-productos.png" alt="Productos más vendidos" loading="lazy">
+              <figcaption>Productos más vendidos</figcaption>
+            </figure>
+
+            <figure class="shot">
+              <img src="assets/projects/resto-ventas-netas.png" alt="Ventas netas por semana" loading="lazy">
+              <figcaption>Ventas netas por semana</figcaption>
+            </figure>
+
+            <figure class="shot">
+              <img src="assets/projects/resto-ventas-sin-impuestos.png" alt="Ventas sin impuestos" loading="lazy">
+              <figcaption>Ventas sin impuestos</figcaption>
+            </figure>
+          </div>
+
+          <!-- Si querés links reales -->
+          <div class="project-links">
+            <!-- <a class="btn btn-primary" href="TU_LINK_PUBLICO_METABASE" target="_blank" rel="noreferrer">Ver dashboard</a> -->
+            <!-- <a class="btn btn-ghost" href="TU_REPO_GITHUB" target="_blank" rel="noreferrer">Código / SQL</a> -->
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
 
     <section id="contacto" class="section">
       <h2>Contacto</h2>
