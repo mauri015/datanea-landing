@@ -373,7 +373,7 @@
     background: rgba(255,255,255,.04);
     border-radius: 26px;
     box-shadow: 0 22px 70px rgba(0,0,0,.35);
-    overflow:hidden;
+    overflow:visible;
   }
 
   .project-overview .project-media{
@@ -424,11 +424,15 @@
   }
 
   .car-viewport{
-    overflow: hidden;
-    border-radius: 22px;
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-  }
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+
+  /* fix mobile: permite scroll vertical normal y swipe horizontal */
+  touch-action: pan-y;
+}
+
 
   .car-track{
     display: flex;
@@ -576,9 +580,12 @@
     gap: 0;
     flex-wrap: unset;
   }
-  /* Contact card */
+/* =========================
+   CONTACT (responsive PRO)
+========================= */
 .contact-card{
-  width: min(980px, 100%);
+  width: 100%;
+  max-width: 980px;
   margin: 18px auto 0;
   padding: 34px 22px 26px;
   border-radius: 34px;
@@ -607,58 +614,101 @@
   display: grid;
   gap: 14px;
   margin-top: 10px;
-  margin-bottom: 18px; /* separa el bloque del footer */
+  margin-bottom: 18px;
 }
 
+/* ✅ UNA SOLA DEFINICIÓN (grid). NO flex. */
 .contact-row{
   display: grid;
-  grid-template-columns: 140px 1fr 80px;
+  grid-template-columns: 140px 1fr 88px; /* label | value | action */
   align-items: center;
   gap: 14px;
 
-  padding: 18px 18px;
+  padding: 18px;
   border-radius: 22px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(0,0,0,.18);
   backdrop-filter: blur(10px);
 }
-.contact-row{
-  text-decoration: none;
-  color: inherit;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
 
-
+/* label */
 .contact-label{
   font-size: 12px;
   letter-spacing: .18em;
   color: rgba(234,240,255,.55);
 }
 
+/* value (no recortar, permitir wrap) */
 .contact-value{
+  min-width: 0;
   text-decoration: none;
   color: rgba(234,240,255,.92);
   font-weight: 650;
   font-size: 18px;
   text-align: right;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+
+  /* ✅ esto arregla el desborde en mobile */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
+/* “Abrir” como botón/link */
 .contact-chip{
-  width: 72px;
+  width: 88px;
   height: 44px;
   border-radius: 14px;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.03);
-  color: rgba(234,240,255,.75);
+  color: rgba(234,240,255,.82);
   display: grid;
   place-items: center;
   font-size: 12px;
+  text-decoration: none;
+  justify-self: end;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
 }
+
+.contact-chip:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.20);
+}
+
+/* 📱 Mobile: baja a 2 filas para que no explote */
+@media (max-width: 520px){
+  .contact-card{
+    padding: 26px 16px 20px;
+    border-radius: 28px;
+  }
+
+  .contact-title{ font-size: 28px; }
+  .contact-sub{ font-size: 14px; margin-bottom: 18px; }
+
+  .contact-row{
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label action"
+      "value value";
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .contact-label{ grid-area: label; }
+  .contact-value{
+    grid-area: value;
+    text-align: left;
+    font-size: 16px;
+  }
+  .contact-chip{
+    grid-area: action;
+    width: auto;
+    padding: 0 12px;
+  }
+}
+
 
 /* Footer contenedor + centrado + espaciado */
 .footer{
@@ -692,13 +742,119 @@
     gap: 10px;
   }
   .contact-value{
-    text-align: left;
-    font-size: 16px;
-    white-space: normal;
+  text-align: left;
+  font-size: 16px;
+  white-space: normal;
+  text-decoration: none; /* ✅ saca subrayado */
+}
+
+/* ✅ por si el navegador aplica underline en visited/hover */
+.contact-value:visited,
+.contact-value:hover,
+.contact-value:active{
+  text-decoration: none;
+}
+
+.contact-chip{
+  justify-self: end;
+}
+
+/* ===== Carrusel: fix mobile (swipe + no recortes raros) ===== */
+.car-viewport{
+  overflow: hidden;          /* recorta SOLO el viewport */
+  touch-action: pan-y;       /* scroll vertical normal */
+}
+
+/* evita overflow raro dentro de grids/flex */
+.project-row > *{
+  min-width: 0;
+}
+
+/* IMPORTANTE: que NO recorte el contenedor grande en mobile */
+@media (max-width: 640px){
+  .project-row{ overflow: visible; }  /* <- CLAVE si se te corta todo */
+  .carousel{ 
+    width: 100%;
+    padding: 12px;
+    overflow: visible;       /* <- evita que se recorten flechas/sombras */
   }
-  .contact-chip{
-    justify-self: end;
+
+  .car-viewport{
+    border-radius: 18px;
   }
+
+  .car-slide{
+    padding: 8px;
+  }
+
+  .car-slide img{
+    height: clamp(180px, 52vw, 240px); /* mejor que fijo: no deforma */
+  }
+}
+
+/* Contacto: sacar subrayado y mantener look de tarjeta */
+.contact-row,
+.contact-row:visited,
+.contact-row:hover,
+.contact-row:active{
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* por si algún estilo global subraya spans */
+.contact-row .contact-value{
+  text-decoration: none !important;
+}
+/* NAV responsive */
+.nav-inner{ position:relative; }
+
+.nav-toggle{
+  display:none;
+  border:1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  cursor:pointer;
+  font-size: 20px;
+  line-height: 1;
+  place-items:center;
+}
+
+@media (max-width: 760px){
+  .nav-inner{
+    height: 72px;            /* nav más cómodo en mobile */
+    padding: 0 14px;
+  }
+
+  .nav-logo{
+    height: 44px;            /* logo visible en mobile */
+    max-width: 160px;
+  }
+
+  .nav-toggle{ display:grid; }
+
+  .nav-links{
+    position:absolute;
+    right: 14px;
+    top: calc(72px + 10px);
+    display:none;            /* cerrado por defecto */
+    flex-direction:column;
+    gap:10px;
+    padding: 12px;
+    border-radius: 18px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(5,10,24,.88);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 22px 70px rgba(0,0,0,.45);
+    min-width: 220px;
+    z-index: 60;
+  }
+
+  .nav-links.open{ display:flex; }
+
+  .pill{ width:100%; justify-content:center; }
 }
 
 </style>
@@ -714,13 +870,24 @@
   <img class="nav-logo" src="assets/Adobe Express - file.png" alt="Logo dataNEA" />
 </a>
 
+        <nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <img class="nav-logo" src="assets/definitivo.png" alt="dataNEA">
+    </a>
 
+    <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+      ☰
+    </button>
 
-      <nav class="nav-links">
-        <a class="pill" href="#sobre-mi">Sobre mí</a>
-        <a class="pill" href="#por-que">Por qué datos</a>
-        <a class="pill" href="#proyectos">Proyectos</a>
-        <a class="pill" href="#contacto">Contacto</a>
+    <div class="nav-links" id="navLinks">
+      <a class="pill" href="#sobre">Sobre mí</a>
+      <a class="pill" href="#por-que">Por qué datos</a>
+      <a class="pill" href="#proyectos">Proyectos</a>
+      <a class="pill" href="#contacto">Contacto</a>
+    </div>
+  </div>
+</nav>
       </nav>
     </div>
   </header>
@@ -1118,60 +1285,124 @@ Gracias!`;
     }
     requestAnimationFrame(step);
   </script>
+<script>
+  (() => {
+    const carousels = document.querySelectorAll('[data-carousel]');
+  
+    carousels.forEach((root) => {
+      const track = root.querySelector('[data-track]');
+      const slides = Array.from(root.querySelectorAll('.car-slide'));
+      const prevBtn = root.querySelector('[data-prev]');
+      const nextBtn = root.querySelector('[data-next]');
+      const dotsWrap = root.querySelector('[data-dots]');
+      const viewport = root.querySelector('[data-viewport]');
+  
+      if (!track || slides.length === 0) return;
+  
+      let index = 0;
+  
+      // Dots
+      let dots = [];
+      if (dotsWrap) {
+        dotsWrap.innerHTML = '';
+        dots = slides.map((_, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'car-dot';
+          b.setAttribute('aria-label', `Ir a ${i + 1}`);
+          b.addEventListener('click', () => goTo(i));
+          dotsWrap.appendChild(b);
+          return b;
+        });
+      }
+  
+      const update = () => {
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((d, i) =>
+          d.setAttribute('aria-current', i === index ? 'true' : 'false')
+        );
+      };
+  
+      const goTo = (i) => {
+        const n = slides.length;
+        index = ((i % n) + n) % n; // wrap seguro
+        update();
+      };
+  
+      const next = () => goTo(index + 1);
+      const prev = () => goTo(index - 1);
+  
+      nextBtn && nextBtn.addEventListener('click', next);
+      prevBtn && prevBtn.addEventListener('click', prev);
+  
+      // Teclado (opcional)
+      root.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
+      });
+      root.tabIndex = 0;
+  
+      // ===== Swipe mobile (izq/der) =====
+      if (viewport) {
+        let startX = 0;
+        let startY = 0;
+  
+        viewport.addEventListener(
+          'touchstart',
+          (e) => {
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+          },
+          { passive: true }
+        );
+  
+        viewport.addEventListener(
+          'touchend',
+          (e) => {
+            const t = e.changedTouches[0];
+            const dx = t.clientX - startX;
+            const dy = t.clientY - startY;
+  
+            // Si fue más horizontal que vertical, lo tomamos como swipe
+            if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+              if (dx < 0) next(); // izquierda -> siguiente
+              else prev();        // derecha -> anterior
+            }
+          },
+          { passive: true }
+        );
+      }
+  
+      update();
+    });
+  })();
+  </script>  
   <script>
 (() => {
-  const carousels = document.querySelectorAll('[data-carousel]');
-  carousels.forEach((root) => {
-    const track = root.querySelector('[data-track]');
-    const slides = Array.from(root.querySelectorAll('.car-slide'));
-    const prevBtn = root.querySelector('[data-prev]');
-    const nextBtn = root.querySelector('[data-next]');
-    const dotsWrap = root.querySelector('[data-dots]');
+  const btn = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  if(!btn || !links) return;
 
-    if (!track || slides.length === 0) return;
+  btn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
 
-    let index = 0;
-
-    // Dots
-    let dots = [];
-    if (dotsWrap) {
-      dotsWrap.innerHTML = '';
-      dots = slides.map((_, i) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'car-dot';
-        b.setAttribute('aria-label', `Ir a ${i + 1}`);
-        b.addEventListener('click', () => goTo(i));
-        dotsWrap.appendChild(b);
-        return b;
-      });
-    }
-
-    const update = () => {
-      track.style.transform = `translateX(-${index * 100}%)`;
-      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
-    };
-
-    const goTo = (i) => {
-      const n = slides.length;
-      index = ((i % n) + n) % n; // wrap seguro
-      update();
-    };
-
-    const next = () => goTo(index + 1);
-    const prev = () => goTo(index - 1);
-
-    nextBtn && nextBtn.addEventListener('click', next);
-    prevBtn && prevBtn.addEventListener('click', prev);
-
-    // Teclado (opcional)
-    root.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') next();
-      if (e.key === 'ArrowLeft') prev();
+  // cerrar al tocar un link
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
     });
-    root.tabIndex = 0;
+  });
 
-    update();
+  // cerrar si tocás afuera
+  document.addEventListener('click', (e) => {
+    if(!links.classList.contains('open')) return;
+    if(links.contains(e.target) || btn.contains(e.target)) return;
+    links.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
   });
 })();
 </script>
