@@ -365,62 +365,118 @@
 }
 
 /* Grilla de capturas: todas iguales, sin recortes */
-.project-gallery{
+/* =========================
+   CARRUSEL (CAPTURAS)
+========================= */
+.carousel{
   margin-top: 16px;
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:14px;
+  position: relative;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  border-radius: 26px;                 /* radius cheto */
+  box-shadow: 0 22px 70px rgba(0,0,0,.35);
+  padding: 14px 14px 18px;
+  overflow: hidden;
 }
 
-/* Cada captura como tarjeta */
-.shot{
-  margin:0;
-  border-radius: 20px;                 /* radius cheto */
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
+.car-viewport{
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.18);
-  box-shadow: 0 14px 40px rgba(0,0,0,.30);
-  transition: transform .15s ease, border-color .15s ease, background .15s ease;
 }
 
-.shot:hover{
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,.18);
-  background: rgba(255,255,255,.06);
+.car-track{
+  display: flex;
+  transition: transform .35s ease;
+  will-change: transform;
 }
 
-/* Imagen sin recorte */
-.shot img{
-  width:100%;
-  height: auto;                        /* clave */
-  display:block;
-  object-fit: contain;                 /* clave: no recorta */
-  padding: 10px;                       /* margen interno “pro” */
+.car-slide{
+  min-width: 100%;
+  margin: 0;
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.car-slide img{
+  width: 100%;
+  height: 360px;             /* mismo tamaño para todas */
+  object-fit: contain;       /* NO recorta */
+  display: block;
+  border-radius: 18px;
   background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.08);
 }
 
-/* Texto abajo */
-.shot figcaption{
-  padding:10px 12px 12px;
-  font-size: 13px;
+.car-slide figcaption{
   color: rgba(234,240,255,.75);
-  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 13px;
+  padding: 2px 4px;
 }
 
-/* Responsive */
+.car-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-60%);
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(6,12,26,.55);
+  color: rgba(255,255,255,.9);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  line-height: 1;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  z-index: 3;
+}
+.car-btn:hover{
+  transform: translateY(-60%) scale(1.03);
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.22);
+}
+.car-btn.prev{ left: 12px; }
+.car-btn.next{ right: 12px; }
+
+.car-dots{
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.car-dot{
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.10);
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.car-dot[aria-current="true"]{
+  background: rgba(255,255,255,.70);
+  transform: scale(1.2);
+}
+
+/* ✅ Mantener tu responsive de .project */
 @media (max-width: 980px){
-  .project{
-    grid-template-columns: 1fr;
-  }
-  .project-media img{
-    max-height: 340px;
-  }
+  .project{ grid-template-columns: 1fr; }
+  .project-media img{ max-height: 340px; }
 }
 
-@media (max-width: 640px){
-  .project-gallery{
-    grid-template-columns: 1fr;        /* una columna en cel */
-  }
+/* Carrusel responsive */
+@media (max-width: 900px){
+  .car-slide img{ height: 280px; }
+}
+@media (max-width: 520px){
+  .car-slide img{ height: 220px; }
+  .car-btn{ width: 38px; height: 38px; }
 }
 
   </style>
@@ -546,32 +602,44 @@
             <li>Top productos más vendidos</li>
           </ul>
 
-          <div class="project-gallery">
-            <figure class="shot">
-              <img src="assets/projects/resto-hora-pico.png" alt="Hora pico" loading="lazy">
-              <figcaption>Hora pico</figcaption>
-            </figure>
+<div class="carousel" data-carousel>
+  <button class="car-btn prev" type="button" aria-label="Anterior" data-prev>‹</button>
 
-            <figure class="shot">
-              <img src="assets/projects/resto-impuestos.png" alt="Impuestos totales" loading="lazy">
-              <figcaption>Impuestos totales</figcaption>
-            </figure>
+  <div class="car-viewport" data-viewport>
+    <div class="car-track" data-track>
 
-            <figure class="shot">
-              <img src="assets/projects/resto-productos.png" alt="Productos más vendidos" loading="lazy">
-              <figcaption>Productos más vendidos</figcaption>
-            </figure>
+      <figure class="car-slide">
+        <img src="assets/projects/resto-hora-pico.png" alt="Hora pico" loading="lazy">
+        <figcaption>Hora pico</figcaption>
+      </figure>
 
-            <figure class="shot">
-              <img src="assets/projects/resto-ventas-netas.png" alt="Ventas netas por semana" loading="lazy">
-              <figcaption>Ventas netas por semana</figcaption>
-            </figure>
+      <figure class="car-slide">
+        <img src="assets/projects/resto-impuestos.png" alt="Impuestos totales" loading="lazy">
+        <figcaption>Impuestos totales</figcaption>
+      </figure>
 
-            <figure class="shot">
-              <img src="assets/projects/resto-ventas-sin-impuestos.png" alt="Ventas sin impuestos" loading="lazy">
-              <figcaption>Ventas sin impuestos</figcaption>
-            </figure>
-          </div>
+      <figure class="car-slide">
+        <img src="assets/projects/resto-productos.png" alt="Productos más vendidos" loading="lazy">
+        <figcaption>Productos más vendidos</figcaption>
+      </figure>
+
+      <figure class="car-slide">
+        <img src="assets/projects/resto-ventas-netas.png" alt="Ventas netas por semana" loading="lazy">
+        <figcaption>Ventas netas por semana</figcaption>
+      </figure>
+
+      <figure class="car-slide">
+        <img src="assets/projects/resto-ventas-sin-impuestos.png" alt="Ventas sin impuestos" loading="lazy">
+        <figcaption>Ventas sin impuestos</figcaption>
+      </figure>
+
+    </div>
+  </div>
+
+  <button class="car-btn next" type="button" aria-label="Siguiente" data-next>›</button>
+
+  <div class="car-dots" data-dots></div>
+</div>
 
           <!-- Si querés links reales -->
           <div class="project-links">
@@ -786,5 +854,67 @@ Gracias!`;
     }
     requestAnimationFrame(step);
   </script>
+  <script>
+  (function () {
+    const root = document.querySelector('[data-carousel]');
+    if (!root) return;
+
+    const track = root.querySelector('[data-track]');
+    const dotsWrap = root.querySelector('[data-dots]');
+    const btnPrev = root.querySelector('[data-prev]');
+    const btnNext = root.querySelector('[data-next]');
+    const slides = Array.from(track.children);
+
+    let index = 0;
+
+    // dots
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'car-dot';
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Ir a slide ' + (i + 1));
+      b.addEventListener('click', () => go(i));
+      dotsWrap.appendChild(b);
+    });
+
+    function update() {
+      track.style.transform = `translateX(${-index * 100}%)`;
+      Array.from(dotsWrap.children).forEach((d, i) => {
+        d.setAttribute('aria-current', i === index ? 'true' : 'false');
+      });
+      btnPrev.disabled = index === 0;
+      btnNext.disabled = index === slides.length - 1;
+      btnPrev.style.opacity = btnPrev.disabled ? .45 : 1;
+      btnNext.style.opacity = btnNext.disabled ? .45 : 1;
+    }
+
+    function go(i) {
+      index = Math.max(0, Math.min(slides.length - 1, i));
+      update();
+    }
+
+    btnPrev.addEventListener('click', () => go(index - 1));
+    btnNext.addEventListener('click', () => go(index + 1));
+
+    // swipe (touch)
+    let startX = 0;
+    let dx = 0;
+    track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; dx = 0; }, {passive:true});
+    track.addEventListener('touchmove', (e) => { dx = e.touches[0].clientX - startX; }, {passive:true});
+    track.addEventListener('touchend', () => {
+      if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+    });
+
+    // teclado
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') go(index - 1);
+      if (e.key === 'ArrowRight') go(index + 1);
+    });
+    root.tabIndex = 0;
+
+    update();
+  })();
+</script>
+
 </body>
 </html>
