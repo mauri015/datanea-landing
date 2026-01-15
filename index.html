@@ -12,474 +12,688 @@
   <title>dataNEA | Analítica & Reportes</title>
   <meta name="description" content="dataNEA: reportes claros para tomar mejores decisiones con datos." />
 
-  <style>
-    :root{
-      --bg:#050A18;
-      --bg2:#07122E;
-      --card: rgba(255,255,255,.06);
-      --line: rgba(255,255,255,.12);
-      --text:#EAF0FF;
-      --muted: rgba(234,240,255,.72);
-      --blue:#3B82F6;
-      --blue2:#60A5FA;
-      --shadow: 0 20px 60px rgba(0,0,0,.55);
-      --radius: 18px;
-    }
+<style>
+  :root{
+    --bg:#050A18;
+    --bg2:#07122E;
+    --card: rgba(255,255,255,.06);
+    --line: rgba(255,255,255,.12);
+    --text:#EAF0FF;
+    --muted: rgba(234,240,255,.72);
+    --blue:#3B82F6;
+    --blue2:#60A5FA;
+    --shadow: 0 20px 60px rgba(0,0,0,.55);
+    --radius: 18px;
+  }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,.18), transparent 60%),
-                  radial-gradient(1000px 500px at 80% 20%, rgba(96,165,250,.14), transparent 60%),
-                  radial-gradient(900px 500px at 50% 90%, rgba(59,130,246,.12), transparent 60%),
-                  linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
-    }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    color:var(--text);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+    background: radial-gradient(1200px 600px at 20% 10%, rgba(59,130,246,.18), transparent 60%),
+                radial-gradient(1000px 500px at 80% 20%, rgba(96,165,250,.14), transparent 60%),
+                radial-gradient(900px 500px at 50% 90%, rgba(59,130,246,.12), transparent 60%),
+                linear-gradient(180deg, var(--bg), var(--bg2));
+    overflow-x:hidden;
+  }
 
-    /* Fondo animado */
-    #bg{
-      position:fixed;
-      inset:0;
-      z-index:-1;
-      width:100%;
-      height:100%;
-      display:block;
-    }
+  /* Fondo animado */
+  #bg{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    width:100%;
+    height:100%;
+    display:block;
+  }
 
-    /* Nav */
-.nav{
-  position:sticky;
-  top:0;
-  z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(5,10,24,.75), rgba(5,10,24,.28));
-  border-bottom:1px solid var(--line);
-}
-
+  /* =========================
+     NAV
+  ========================= */
+  .nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter: blur(14px);
+    background: linear-gradient(to bottom, rgba(5,10,24,.75), rgba(5,10,24,.28));
+    border-bottom:1px solid var(--line);
+  }
 .nav-inner{
   max-width:1100px;
   margin:0 auto;
-  height: 60px;          /* <- altura fija del navbar (probá 60/64/68) */
-  padding: 0 18px;       /* <- sin padding vertical */
+  height: 95px;     /* navbar alto */
+  padding: 0 18px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
 }
 
-
-/* Brand */
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  text-decoration:none;
-  color:var(--text);
-}
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--text);
+    min-width: 0;
+  }
 
 .nav-logo{
-  height: calc(80px - 5px);  /* <- casi toda la altura (dejá bordes finos) */
-  width: auto;
-  max-width: 260px;           /* <- límite para que no empuje los botones */
-  display:block;
+  height: 90px;     /* el logo SIEMPRE menor que el nav */
+  width:auto;
+  max-width: 320px;
   object-fit: contain;
-  padding: 0px 0;             /* <- bordes finitos arriba/abajo */
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,.30));
-}
-
-.brand strong{ letter-spacing:.2px; }
-
-/* Links */
-.nav-links{
-  display:flex; gap:10px; flex-wrap:wrap;
-  align-items:center; justify-content:flex-end;
-}
-
-.pill{
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:999px;
-  background: rgba(255,255,255,.04);
-  transition: transform .15s ease, background .15s ease, border-color .15s ease;
-  cursor:pointer;
-  color: var(--muted);
-  text-decoration:none;
-  font-size: 14px;
-}
-
-.pill:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.18);
-  color: var(--text);
-}
-
-/* Responsive */
-@media (max-width: 520px){
-  .nav-logo{ height: 18px; max-width: 130px; }
-}
-
-    /* Layout */
-    .wrap{ max-width:1100px; margin:0 auto; padding: 26px 18px 70px; }
-    .hero{
-      padding: 34px 0 18px;
-      display:grid;
-      grid-template-columns: 1fr; /* antes eran 2 columnas: ahora 1 */
-      gap: 14px;
-      align-items:stretch;
-      justify-items:center; /* centra el card */
-    }
-
-    .card{
-      width: min(820px, 100%);
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .card-inner{ padding: 22px; text-align:center; } /* centrado */
-
-    .kicker{
-      display:inline-flex; gap:8px; align-items:center;
-      padding: 8px 12px;
-      border-radius:999px;
-      background: rgba(59,130,246,.12);
-      border: 1px solid rgba(59,130,246,.28);
-      color: rgba(234,240,255,.92);
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    h1{
-      margin:0 0 10px;
-      font-size: 40px;
-      line-height: 1.08;
-      letter-spacing: -.6px;
-    }
-    @media (max-width: 480px){
-      h1{ font-size: 34px; }
-    }
-
-    .sub{
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.55;
-      max-width: 70ch;
-    }
-
-    .cta-row{
-      margin-top: 18px;
-      display:flex;
-      flex-wrap:wrap;
-      gap: 10px;
-      align-items:center;
-      justify-content:center; /* centra botones */
-    }
-    .btn{
-      border:none;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-weight: 650;
-      cursor:pointer;
-      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
-      display:inline-flex;
-      gap:10px;
-      align-items:center;
-      text-decoration:none;
-      user-select:none;
-    }
-    .btn-primary{
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      color:#071124;
-      box-shadow: 0 12px 32px rgba(59,130,246,.22);
-    }
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,.14);
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-
-    /* Sections */
-    .section{ margin-top: 16px; padding-top: 8px; }
-    .section h2{
-      margin: 0 0 12px;
-      font-size: 20px;
-      letter-spacing: -.2px;
-    }
-
-    .grid{
-      display:grid;
-      gap: 12px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
-
-    .feature{
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.12);
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-    .feature:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.18);
-    }
-    .feature h3{ margin: 0 0 6px; font-size: 15px; }
-    .feature p{ margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
-
-    .projects{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (max-width: 900px){ .projects{ grid-template-columns: 1fr; } }
-
-    .proj{
-      padding: 16px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.12);
-    }
-    .proj p{ margin: 8px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
-    .tag{
-      font-size: 12px;
-      color: rgba(234,240,255,.92);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      padding: 7px 10px;
-      border-radius: 999px;
-    }
-
-    .input{
-      width:100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      outline:none;
-    }
-    .tiny{ font-size: 12.5px; }
-    .muted{ color: var(--muted); }
-
-    footer{
-      margin-top: 20px;
-      color: rgba(234,240,255,.55);
-      font-size: 12px;
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap:wrap;
-    }
-
-    /* Toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      background: rgba(7,17,36,.85);
-      border: 1px solid rgba(255,255,255,.14);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      backdrop-filter: blur(12px);
-      box-shadow: var(--shadow);
-      opacity: 0;
-      pointer-events:none;
-      transition: opacity .18s ease, transform .18s ease;
-      z-index: 100;
-      font-size: 13px;
-    }
-    .toast.show{
-      opacity: 1;
-      transform: translateX(-50%) translateY(-3px);
-    }
-    /* =========================
-   PROYECTOS (UI CLEAN)
-========================= */
-.projects{
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-  margin-top:18px;
-}
-
-/* Card principal del proyecto */
-.project{
-  display:grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap:22px;
-  padding:18px;
-  border:1px solid rgba(255,255,255,.12);
-  background: rgba(255,255,255,.04);
-  border-radius: 26px;                 /* radius cheto */
-  box-shadow: 0 22px 70px rgba(0,0,0,.38);
-  overflow:hidden;
-}
-
-/* Imagen grande (overview) */
-.project-media{
-  border-radius: 22px;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.18);
-}
-
-.project-media img{
-  width:100%;
-  height:auto;                         /* clave: no forzar altura */
   display:block;
-  object-fit: contain;                 /* clave: NO recorta */
-  max-height: 420px;                   /* limita tamaño sin deformar */
 }
 
-/* Texto */
-.project-info h3{
-  margin:0 0 10px;
-  font-size: 18px;
-  line-height: 1.25;
-}
+  .brand strong{ letter-spacing:.2px; }
 
-.project-info p{
-  margin:0 0 12px;
+  .nav-links{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-end;
+  }
+
+  .pill{
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background: rgba(255,255,255,.04);
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    cursor:pointer;
+    color: var(--muted);
+    text-decoration:none;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .pill:hover{
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.18);
+    color: var(--text);
+  }
+
+  @media (max-width: 520px){
+    .nav-inner{ height: 58px; }
+    .nav-logo{ height: 28px; max-width: 150px; }
+    .pill{ padding:9px 10px; font-size:13px; }
+  }
+
+  /* =========================
+     LAYOUT / HERO
+  ========================= */
+  .wrap{ max-width:1100px; margin:0 auto; padding: 26px 18px 70px; }
+  .hero{
+    padding: 34px 0 18px;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items:stretch;
+    justify-items:center;
+  }
+
+  .card{
+    width: min(820px, 100%);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .card-inner{ padding: 22px; text-align:center; }
+
+  .kicker{
+    display:inline-flex; gap:8px; align-items:center;
+    padding: 8px 12px;
+    border-radius:999px;
+    background: rgba(59,130,246,.12);
+    border: 1px solid rgba(59,130,246,.28);
+    color: rgba(234,240,255,.92);
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  h1{
+    margin:0 0 10px;
+    font-size: 40px;
+    line-height: 1.08;
+    letter-spacing: -.6px;
+  }
+  @media (max-width: 480px){
+    h1{ font-size: 34px; }
+  }
+  .sub{
+  margin: 0 auto 18
+  px;   /* antes: 0 auto */
   color: var(--muted);
+  font-size: 16px;
   line-height: 1.55;
+  max-width: 70ch;
 }
 
-.project-bullets{
-  margin:0;
-  padding-left:18px;
-  color: rgba(234,240,255,.80);
-  line-height: 1.55;
-}
 
-/* Grilla de capturas: todas iguales, sin recortes */
-/* =========================
-   CARRUSEL (CAPTURAS)
-========================= */
-.carousel{
-  margin-top: 16px;
-  position: relative;
-  border:1px solid rgba(255,255,255,.12);
+  .cta-row{
+    margin-top: 18px;
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .btn{
+    border:none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-weight: 650;
+    cursor:pointer;
+    transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    text-decoration:none;
+    user-select:none;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, var(--blue), var(--blue2));
+    color:#071124;
+    box-shadow: 0 12px 32px rgba(59,130,246,.22);
+  }
+  .btn-ghost{
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,.14);
+  }
+  .btn:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+
+  /* =========================
+     SECTIONS / FEATURES
+  ========================= */
+  .section{ margin-top: 16px; padding-top: 8px; }
+  .section h2{
+    margin: 0 0 12px;
+    font-size: 20px;
+    letter-spacing: -.2px;
+  }
+
+  .grid{
+    display:grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 900px){ .grid{ grid-template-columns: 1fr; } }
+
+  .feature{
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .feature:hover{
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.18);
+  }
+  .feature h3{ margin: 0 0 6px; font-size: 15px; }
+  .feature p{ margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+  .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 12px; }
+  .tag{
+    font-size: 12px;
+    color: rgba(234,240,255,.92);
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    padding: 7px 10px;
+    border-radius: 999px;
+  }
+
+  .input{
+    width:100%;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+    outline:none;
+  }
+  .tiny{ font-size: 12.5px; }
+  .muted{ color: var(--muted); }
+
+  /* =========================
+     TOAST
+  ========================= */
+  .toast{
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    background: rgba(7,17,36,.85);
+    border: 1px solid rgba(255,255,255,.14);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    pointer-events:none;
+    transition: opacity .18s ease, transform .18s ease;
+    z-index: 100;
+    font-size: 13px;
+  }
+  .toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(-3px);
+  }
+
+  /* =========================
+     ICONOS FOOTER (XEON)
+  ========================= */
+  .icon-btn{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    text-decoration:none;
+    color: rgba(234,240,255,.88);
+    position:relative;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .icon-btn.xeon{
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow:
+      0 14px 40px rgba(0,0,0,.35),
+      0 0 0 1px rgba(120,180,255,.10) inset;
+  }
+
+  .icon-btn.xeon::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius: inherit;
+    pointer-events:none;
+    background: radial-gradient(120% 120% at 20% 10%, rgba(90,170,255,.45), transparent 60%),
+                radial-gradient(120% 120% at 80% 90%, rgba(80,140,255,.25), transparent 55%);
+    opacity:.35;
+    filter: blur(0.2px);
+  }
+
+  .icon-btn:hover{
+    transform: translateY(-2px);
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.22);
+    box-shadow:
+      0 18px 54px rgba(0,0,0,.45),
+      0 0 22px rgba(90,170,255,.20);
+    color: var(--text);
+  }
+
+  .icon-btn:active{ transform: translateY(0); }
+
+  .icon-btn svg{
+    width:20px;
+    height:20px;
+  }
+
+  /* =========================
+     PROYECTOS (2 FILAS: OVERVIEW + CARRUSEL)
+  ========================= */
+  .projects{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    margin-top:18px;
+  }
+
+  .project.project-v2{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding:0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .project-row{
+    display:grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap:22px;
+    padding:18px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    border-radius: 26px;
+    box-shadow: 0 22px 70px rgba(0,0,0,.35);
+    overflow:hidden;
+  }
+
+  .project-overview .project-media{
+    border-radius: 22px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+  }
+
+  .project-overview .project-media img{
+    width:100%;
+    height:auto;
+    display:block;
+    object-fit: contain;
+    max-height: 420px;
+  }
+
+  .project-info h3{
+    margin:0 0 10px;
+    font-size: 18px;
+    line-height: 1.25;
+  }
+
+  .project-info p{
+    margin:0 0 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .project-bullets{
+    margin:0;
+    padding-left:18px;
+    color: rgba(234,240,255,.80);
+    line-height: 1.55;
+  }
+
+  /* =========================
+     CARRUSEL
+  ========================= */
+  .carousel{
+    position: relative;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    border-radius: 26px;
+    box-shadow: 0 22px 70px rgba(0,0,0,.35);
+    padding: 14px 14px 18px;
+    overflow: hidden;
+  }
+
+  .car-viewport{
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+  }
+
+  .car-track{
+    display: flex;
+    transition: transform .35s ease;
+    will-change: transform;
+  }
+
+  .car-slide{
+    min-width: 100%;
+    margin: 0;
+    padding: 10px;
+    display: grid;
+    gap: 10px;
+  }
+
+  .car-slide img{
+    width: 100%;
+    height: 360px;
+    object-fit: contain;
+    display: block;
+    border-radius: 18px;
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+
+  .car-slide figcaption{
+    color: rgba(234,240,255,.75);
+    font-size: 13px;
+    padding: 2px 4px;
+  }
+
+  .car-btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-60%);
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(6,12,26,.55);
+    color: rgba(255,255,255,.9);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    line-height: 1;
+    box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    z-index: 3;
+  }
+
+  .car-btn:hover{
+    transform: translateY(-60%) scale(1.03);
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.22);
+  }
+
+  .car-btn.prev{ left: 12px; }
+  .car-btn.next{ right: 12px; }
+
+  .car-dots{
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .car-dot{
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.10);
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+
+  .car-dot[aria-current="true"]{
+    background: rgba(255,255,255,.70);
+    transform: scale(1.2);
+  }
+
+  @media (max-width: 980px){
+    .project-row{ grid-template-columns: 1fr; }
+    .project-overview .project-media img{ max-height: 340px; }
+  }
+
+  @media (max-width: 900px){
+    .car-slide img{ height: 280px; }
+  }
+  @media (max-width: 520px){
+    .car-slide img{ height: 220px; }
+    .car-btn{ width: 38px; height: 38px; }
+  }
+
+  /* =========================
+     FOOTER (CENTRADO + CONTENEDOR)
+  ========================= */
+  .footer{
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    box-shadow: 0 22px 70px rgba(0,0,0,.25);
+  }
+
+  .footer-inner{
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px; /* ✅ (antes estaba roto) */
+  }
+
+  .footer-note{
+    color: rgba(234,240,255,.70);
+    font-size: 12.5px;
+    margin: 0;
+  }
+
+  .footer-icons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+
+  .footer-made{
+    color: rgba(234,240,255,.55);
+    font-size: 12px;
+    margin: 0;
+  }
+
+  /* neutraliza el footer{} viejo si lo tenías afectando layout */
+  footer{
+    display:block;
+    justify-content: unset;
+    gap: 0;
+    flex-wrap: unset;
+  }
+  /* Contact card */
+.contact-card{
+  width: min(980px, 100%);
+  margin: 18px auto 0;
+  padding: 34px 22px 26px;
+  border-radius: 34px;
+  border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.04);
-  border-radius: 26px;                 /* radius cheto */
-  box-shadow: 0 22px 70px rgba(0,0,0,.35);
-  padding: 14px 14px 18px;
-  overflow: hidden;
+  box-shadow: 0 28px 80px rgba(0,0,0,.45);
 }
 
-.car-viewport{
-  overflow: hidden;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.18);
-}
-
-.car-track{
-  display: flex;
-  transition: transform .35s ease;
-  will-change: transform;
-}
-
-.car-slide{
-  min-width: 100%;
+.contact-title{
   margin: 0;
-  padding: 10px;
+  font-size: 38px;
+  letter-spacing: -.6px;
+  text-align: center;
+}
+
+.contact-sub{
+  margin: 12px auto 26px;
+  max-width: 70ch;
+  text-align: center;
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.contact-list{
   display: grid;
-  gap: 10px;
+  gap: 14px;
+  margin-top: 10px;
+  margin-bottom: 18px; /* separa el bloque del footer */
 }
 
-.car-slide img{
-  width: 100%;
-  height: 360px;             /* mismo tamaño para todas */
-  object-fit: contain;       /* NO recorta */
-  display: block;
-  border-radius: 18px;
-  background: rgba(255,255,255,.02);
-  border: 1px solid rgba(255,255,255,.08);
-}
+.contact-row{
+  display: grid;
+  grid-template-columns: 140px 1fr 80px;
+  align-items: center;
+  gap: 14px;
 
-.car-slide figcaption{
-  color: rgba(234,240,255,.75);
-  font-size: 13px;
-  padding: 2px 4px;
-}
-
-.car-btn{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-60%);
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(6,12,26,.55);
-  color: rgba(255,255,255,.9);
+  padding: 18px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
   backdrop-filter: blur(10px);
-  cursor: pointer;
+}
+
+.contact-label{
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: rgba(234,240,255,.55);
+}
+
+.contact-value{
+  text-decoration: none;
+  color: rgba(234,240,255,.92);
+  font-weight: 650;
+  font-size: 18px;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-chip{
+  width: 72px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  color: rgba(234,240,255,.75);
   display: grid;
   place-items: center;
-  font-size: 26px;
-  line-height: 1;
-  box-shadow: 0 14px 40px rgba(0,0,0,.35);
-  transition: transform .15s ease, background .15s ease, border-color .15s ease;
-  z-index: 3;
+  font-size: 12px;
 }
-.car-btn:hover{
-  transform: translateY(-60%) scale(1.03);
-  background: rgba(255,255,255,.08);
-  border-color: rgba(255,255,255,.22);
-}
-.car-btn.prev{ left: 12px; }
-.car-btn.next{ right: 12px; }
 
-.car-dots{
-  margin-top: 10px;
-  display: flex;
-  gap: 8px;
+/* Footer contenedor + centrado + espaciado */
+.footer{
+  margin-top: 26px;         /* más aire entre contacto e íconos */
+  padding-top: 18px;        /* aire interno */
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+
+.footer-inner.footer-centered{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;               /* espacio entre textos e íconos */
+}
+
+.footer-icons{
+  display:flex;
   justify-content: center;
-}
-.car-dot{
-  width: 9px;
-  height: 9px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.22);
-  background: rgba(255,255,255,.10);
-  cursor: pointer;
-  transition: transform .15s ease, background .15s ease;
-}
-.car-dot[aria-current="true"]{
-  background: rgba(255,255,255,.70);
-  transform: scale(1.2);
+  align-items:center;
+  gap: 10px;
+  margin-top: 6px;
+  margin-bottom: 4px;
 }
 
-/* ✅ Mantener tu responsive de .project */
-@media (max-width: 980px){
-  .project{ grid-template-columns: 1fr; }
-  .project-media img{ max-height: 340px; }
+/* responsive */
+@media (max-width: 720px){
+  .contact-title{ font-size: 32px; }
+  .contact-row{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .contact-value{
+    text-align: left;
+    font-size: 16px;
+    white-space: normal;
+  }
+  .contact-chip{
+    justify-self: end;
+  }
 }
 
-/* Carrusel responsive */
-@media (max-width: 900px){
-  .car-slide img{ height: 280px; }
-}
-@media (max-width: 520px){
-  .car-slide img{ height: 220px; }
-  .car-btn{ width: 38px; height: 38px; }
-}
+</style>
 
-  </style>
 </head>
 
 <body>
@@ -516,16 +730,8 @@
 </p>
 
 
-          <div class="cta-row">
-            <a class="btn btn-primary" id="btnWhatsApp" href="https://wa.me/543795672422?text=Hola%20Mauricio!%20%F0%9F%91%8B%20Me%20interesa%20analisis%20de%20datos%2Freportes.%20%C2%BFPodemos%20hablar%3F" target="_blank" rel="noreferrer">💬 WhatsApp</a>
-            <a class="btn btn-ghost" id="btnEmail" href="mailto:maurisalvador094a@outlook.com?subject=Consulta%20-%20dataNEA">✉️ Email</a>
-            <a class="btn btn-ghost" id="btnLinkedIn" href="https://www.linkedin.com/in/mauricio-salvador-solis-679765220/" target="_blank" rel="noreferrer">🔗 LinkedIn</a>
-            <a class="btn btn-ghost" id="btnGitHub" href="https://github.com/mauri015" target="_blank" rel="noreferrer">💻 GitHub</a>
-          </div>
+<!-- CTA removido -->
 
-          <p class="tiny muted" style="margin-top:12px;">
-            Si tenés datos en Excel/CSV, ya se puede empezar.
-          </p>
         </div>
       </div>
     </section>
@@ -583,117 +789,169 @@
 
     <div class="projects">
 
-      <!-- PROYECTO: RESTO GRILL ANALYTICS -->
-      <article class="project">
-        <div class="project-media">
-          <img src="assets/projects/resto-overview.png" alt="Resto Grill Analytics - Dashboard completo" loading="lazy">
-        </div>
+<!-- PROYECTO: RESTO GRILL ANALYTICS -->
+<article class="project project-v2">
 
-        <div class="project-info">
-          <h3>Resto Grill Analytics (Metabase + Postgres)</h3>
-          <p>
-            Dashboard para analizar ventas, impuestos, productos más vendidos y comportamiento por horarios.
-            Enfocado en insights rápidos para mejorar decisiones comerciales.
-          </p>
+  <!-- FILA 1: OVERVIEW (imagen grande + info general) -->
+  <div class="project-row project-overview">
+    <div class="project-media">
+      <img src="assets/projects/resto-overview.png" alt="Resto Grill Analytics - Dashboard completo" loading="lazy">
+    </div>
 
-          <ul class="project-bullets">
-            <li>Ventas netas vs ventas sin impuestos</li>
-            <li>Hora pico (distribución por hora)</li>
-            <li>Top productos más vendidos</li>
-          </ul>
+    <div class="project-info">
+      <h3>Resto Grill Analytics (Metabase + Postgres)</h3>
+      <p>
+        Dashboard para analizar ventas, impuestos, productos más vendidos y comportamiento por horarios.
+        Enfocado en insights rápidos para mejorar decisiones comerciales.
+      </p>
 
-<div class="carousel" data-carousel>
-  <button class="car-btn prev" type="button" aria-label="Anterior" data-prev>‹</button>
-
-  <div class="car-viewport" data-viewport>
-    <div class="car-track" data-track>
-
-      <figure class="car-slide">
-        <img src="assets/projects/resto-hora-pico.png" alt="Hora pico" loading="lazy">
-        <figcaption>Hora pico</figcaption>
-      </figure>
-
-      <figure class="car-slide">
-        <img src="assets/projects/resto-impuestos.png" alt="Impuestos totales" loading="lazy">
-        <figcaption>Impuestos totales</figcaption>
-      </figure>
-
-      <figure class="car-slide">
-        <img src="assets/projects/resto-productos.png" alt="Productos más vendidos" loading="lazy">
-        <figcaption>Productos más vendidos</figcaption>
-      </figure>
-
-      <figure class="car-slide">
-        <img src="assets/projects/resto-ventas-netas.png" alt="Ventas netas por semana" loading="lazy">
-        <figcaption>Ventas netas por semana</figcaption>
-      </figure>
-
-      <figure class="car-slide">
-        <img src="assets/projects/resto-ventas-sin-impuestos.png" alt="Ventas sin impuestos" loading="lazy">
-        <figcaption>Ventas sin impuestos</figcaption>
-      </figure>
-
+      <ul class="project-bullets">
+        <li>Ventas netas vs ventas sin impuestos</li>
+        <li>Hora pico (distribución por hora)</li>
+        <li>Top productos más vendidos</li>
+      </ul>
     </div>
   </div>
 
-  <button class="car-btn next" type="button" aria-label="Siguiente" data-next>›</button>
+  <!-- FILA 2: CARRUSEL (capturas) + info específica -->
+  <div class="project-row project-detail">
+    <div class="project-carousel">
 
-  <div class="car-dots" data-dots></div>
-</div>
+      <div class="carousel" data-carousel>
+        <button class="car-btn prev" type="button" aria-label="Anterior" data-prev>‹</button>
 
-          <!-- Si querés links reales -->
-          <div class="project-links">
-            <!-- <a class="btn btn-primary" href="TU_LINK_PUBLICO_METABASE" target="_blank" rel="noreferrer">Ver dashboard</a> -->
-            <!-- <a class="btn btn-ghost" href="TU_REPO_GITHUB" target="_blank" rel="noreferrer">Código / SQL</a> -->
+        <div class="car-viewport" data-viewport>
+          <div class="car-track" data-track>
+
+            <figure class="car-slide">
+              <img src="assets/projects/resto-hora-pico.png" alt="Hora pico" loading="lazy">
+              <figcaption>Hora pico</figcaption>
+            </figure>
+
+            <figure class="car-slide">
+              <img src="assets/projects/resto-impuestos.png" alt="Impuestos totales" loading="lazy">
+              <figcaption>Impuestos totales</figcaption>
+            </figure>
+
+            <figure class="car-slide">
+              <img src="assets/projects/resto-productos.png" alt="Productos más vendidos" loading="lazy">
+              <figcaption>Productos más vendidos</figcaption>
+            </figure>
+
+            <figure class="car-slide">
+              <img src="assets/projects/resto-ventas-netas.png" alt="Ventas netas por semana" loading="lazy">
+              <figcaption>Ventas netas por semana</figcaption>
+            </figure>
+
+            <figure class="car-slide">
+              <img src="assets/projects/resto-ventas-sin-impuestos.png" alt="Ventas sin impuestos" loading="lazy">
+              <figcaption>Ventas sin impuestos</figcaption>
+            </figure>
+
           </div>
         </div>
-      </article>
+
+        <button class="car-btn next" type="button" aria-label="Siguiente" data-next>›</button>
+        <div class="car-dots" data-dots></div>
+      </div>
+
+    </div>
+
+    <div class="project-detail-info">
+      <h4>Qué podés leer en estas capturas</h4>
+      <p>
+        Cada visual responde una pregunta concreta para tomar decisiones rápidas:
+        cuándo reforzar personal, qué productos empujan el revenue y cómo afectan impuestos/bonos al ticket.
+      </p>
+
+      <ul class="project-bullets">
+        <li><strong>Hora pico:</strong> horarios con mayor demanda.</li>
+        <li><strong>Impuestos:</strong> cuánto pesa tax sobre el total.</li>
+        <li><strong>Top productos:</strong> ranking por revenue y unidades.</li>
+        <li><strong>Ventas semanales:</strong> tendencia por semana.</li>
+      </ul>
+    </div>
+  </div>
+
+</article>
+
 
     </div>
   </div>
 </section>
 
-    <section id="contacto" class="section">
-      <h2>Contacto</h2>
-      <div class="projects">
-        <div class="proj">
-          <strong>Escribime</strong>
-          <p class="muted tiny">Copiá o abrí directo:</p>
+<section id="contacto" class="section">
+  <div class="contact-card">
+    <h2 class="contact-title">Contáctanos</h2>
+    <p class="contact-sub">
+      Si tenés una idea para tu próximo proyecto, escribime y coordinamos una reunión.
+    </p>
 
-          <input class="input" id="contactEmail" readonly />
-          <div class="row">
-            <button class="btn btn-ghost" type="button" onclick="copyText('contactEmail')">📋 Copiar email</button>
-            <a class="btn btn-ghost" id="btnEmail2" href="#">✉️ Enviar email</a>
-          </div>
-
-          <input class="input" id="contactPhone" readonly />
-          <div class="row">
-            <button class="btn btn-ghost" type="button" onclick="copyText('contactPhone')">📋 Copiar WhatsApp</button>
-            <a class="btn btn-primary" id="btnWhatsApp2" href="#" target="_blank" rel="noreferrer">💬 Abrir WhatsApp</a>
-          </div>
-        </div>
-
-        <div class="proj">
-          <strong>Mensaje listo</strong>
-          <p class="muted tiny">Lo podés mandar tal cual:</p>
-          <textarea class="input" id="waMsg" rows="5"></textarea>
-          <div class="row">
-            <button class="btn btn-ghost" type="button" onclick="copyText('waMsg')">📋 Copiar mensaje</button>
-            <button class="btn btn-primary" type="button" id="btnSendWA">🚀 Enviar por WhatsApp</button>
-          </div>
-          <p class="tiny muted" style="margin-top:12px;">
-            LinkedIn y GitHub están arriba para ver mis trabajos.
-          </p>
-        </div>
+    <div class="contact-list">
+      <div class="contact-row">
+        <span class="contact-label">WHATSAPP</span>
+        <a class="contact-value" href="https://wa.me/543795672422" target="_blank" rel="noreferrer">
+          +54 9 379 567 2422
+        </a>
+        <span class="contact-chip">Abrir</span>
       </div>
 
-      <footer>
-        <span id="footerLeft">© <span id="year"></span> dataNEA</span>
-        <span class="muted">Hecho por Mauricio Solis· dataNEA</span>
-      </footer>
-    </section>
+      <div class="contact-row">
+        <span class="contact-label">CORREO</span>
+        <a class="contact-value" href="mailto:maurisalvador094a@outlook.com">
+          maurisalvador094a@outlook.com
+        </a>
+        <span class="contact-chip">Abrir</span>
+      </div>
+
+      <div class="contact-row">
+        <span class="contact-label">LINKEDIN</span>
+        <a class="contact-value" href="https://www.linkedin.com/in/mauricio-salvador-solis-679765220/" target="_blank" rel="noreferrer">
+          Mauricio Salvador Solís
+        </a>
+        <span class="contact-chip">Abrir</span>
+      </div>
+    </div>
+
+
   </main>
 
+
+  <footer class="footer">
+  <div class="footer-inner footer-centered">
+
+    <p class="footer-note muted">
+      © <span id="year"></span> dataNEA — Todos los derechos reservados.
+    </p>
+
+    <div class="footer-icons" aria-label="Redes y contacto">
+      <a class="icon-btn xeon" href="https://www.instagram.com/data.nea/" target="_blank" rel="noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4a3.8 3.8 0 0 0 3.8-3.8V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm4.2 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5ZM18 6.2a1 1 0 1 1-1 1a1 1 0 0 1 1-1Z"/></svg>
+      </a>
+
+      <a class="icon-btn xeon" href="https://wa.me/543795672422" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.88 11.88 0 0 0 12.05 0C5.43 0 .06 5.37.06 11.99c0 2.11.55 4.17 1.6 5.99L0 24l6.17-1.62a11.93 11.93 0 0 0 5.88 1.5h.01c6.62 0 11.99-5.37 11.99-11.99c0-3.2-1.25-6.2-3.53-8.41ZM12.06 21.3h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.66.96.98-3.56-.23-.37a9.86 9.86 0 0 1-1.52-5.24C2.21 6.48 6.55 2.14 12.05 2.14c2.1 0 4.08.82 5.57 2.31a7.82 7.82 0 0 1 2.31 5.57c0 5.5-4.34 9.88-9.87 9.88Z"/></svg>
+      </a>
+
+      <a class="icon-btn xeon" href="mailto:maurisalvador094a@outlook.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4.2-8 5.3-8-5.3V6l8 5.3L20 6v2.2Z"/></svg>
+      </a>
+
+      <a class="icon-btn xeon" href="https://www.linkedin.com/in/mauricio-salvador-solis-679765220/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.34V9h3.42v1.56h.05c.48-.9 1.66-1.85 3.41-1.85 3.65 0 4.32 2.4 4.32 5.52v6.22ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg>
+      </a>
+
+      <a class="icon-btn xeon" href="https://github.com/mauri015" target="_blank" rel="noreferrer" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.2-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .1.9 1.8 2.4 2.2.2-.7.4-1.2.8-1.5-2.6-.3-5.3-1.3-5.3-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.7 5.6-5.3 5.9.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
+      </a>
+    </div>
+
+    <p class="muted footer-made">
+      Hecho por Mauricio Solís · dataNEA
+    </p>
+
+  </div>
+</footer>
   <div class="toast" id="toast">Copiado ✅</div>
 
   <script>
@@ -855,65 +1113,61 @@ Gracias!`;
     requestAnimationFrame(step);
   </script>
   <script>
-  (function () {
-    const root = document.querySelector('[data-carousel]');
-    if (!root) return;
-
+(() => {
+  const carousels = document.querySelectorAll('[data-carousel]');
+  carousels.forEach((root) => {
     const track = root.querySelector('[data-track]');
+    const slides = Array.from(root.querySelectorAll('.car-slide'));
+    const prevBtn = root.querySelector('[data-prev]');
+    const nextBtn = root.querySelector('[data-next]');
     const dotsWrap = root.querySelector('[data-dots]');
-    const btnPrev = root.querySelector('[data-prev]');
-    const btnNext = root.querySelector('[data-next]');
-    const slides = Array.from(track.children);
+
+    if (!track || slides.length === 0) return;
 
     let index = 0;
 
-    // dots
-    slides.forEach((_, i) => {
-      const b = document.createElement('button');
-      b.className = 'car-dot';
-      b.type = 'button';
-      b.setAttribute('aria-label', 'Ir a slide ' + (i + 1));
-      b.addEventListener('click', () => go(i));
-      dotsWrap.appendChild(b);
-    });
-
-    function update() {
-      track.style.transform = `translateX(${-index * 100}%)`;
-      Array.from(dotsWrap.children).forEach((d, i) => {
-        d.setAttribute('aria-current', i === index ? 'true' : 'false');
+    // Dots
+    let dots = [];
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      dots = slides.map((_, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'car-dot';
+        b.setAttribute('aria-label', `Ir a ${i + 1}`);
+        b.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(b);
+        return b;
       });
-      btnPrev.disabled = index === 0;
-      btnNext.disabled = index === slides.length - 1;
-      btnPrev.style.opacity = btnPrev.disabled ? .45 : 1;
-      btnNext.style.opacity = btnNext.disabled ? .45 : 1;
     }
 
-    function go(i) {
-      index = Math.max(0, Math.min(slides.length - 1, i));
+    const update = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => d.setAttribute('aria-current', i === index ? 'true' : 'false'));
+    };
+
+    const goTo = (i) => {
+      const n = slides.length;
+      index = ((i % n) + n) % n; // wrap seguro
       update();
-    }
+    };
 
-    btnPrev.addEventListener('click', () => go(index - 1));
-    btnNext.addEventListener('click', () => go(index + 1));
+    const next = () => goTo(index + 1);
+    const prev = () => goTo(index - 1);
 
-    // swipe (touch)
-    let startX = 0;
-    let dx = 0;
-    track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; dx = 0; }, {passive:true});
-    track.addEventListener('touchmove', (e) => { dx = e.touches[0].clientX - startX; }, {passive:true});
-    track.addEventListener('touchend', () => {
-      if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
-    });
+    nextBtn && nextBtn.addEventListener('click', next);
+    prevBtn && prevBtn.addEventListener('click', prev);
 
-    // teclado
+    // Teclado (opcional)
     root.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') go(index - 1);
-      if (e.key === 'ArrowRight') go(index + 1);
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
     });
     root.tabIndex = 0;
 
     update();
-  })();
+  });
+})();
 </script>
 
 </body>
