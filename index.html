@@ -870,25 +870,24 @@
   <img class="nav-logo" src="assets/Adobe Express - file.png" alt="Logo dataNEA" />
 </a>
 
-        <nav class="nav">
+<nav class="nav" id="topNav">
   <div class="nav-inner">
-    <a class="brand" href="#top">
-      <img class="nav-logo" src="assets/definitivo.png" alt="dataNEA">
+    <a class="brand" href="#inicio" aria-label="dataNEA">
     </a>
 
-    <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+    <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
       ☰
     </button>
 
     <div class="nav-links" id="navLinks">
-      <a class="pill" href="#sobre">Sobre mí</a>
+      <a class="pill" href="#sobre-mi">Sobre mí</a>
       <a class="pill" href="#por-que">Por qué datos</a>
       <a class="pill" href="#proyectos">Proyectos</a>
       <a class="pill" href="#contacto">Contacto</a>
     </div>
   </div>
 </nav>
-      </nav>
+
     </div>
   </header>
 
@@ -1378,34 +1377,6 @@ Gracias!`;
     });
   })();
   </script>  
-  <script>
-(() => {
-  const btn = document.querySelector('.nav-toggle');
-  const links = document.querySelector('.nav-links');
-  if(!btn || !links) return;
-
-  btn.addEventListener('click', () => {
-    const open = links.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-
-  // cerrar al tocar un link
-  links.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    });
-  });
-
-  // cerrar si tocás afuera
-  document.addEventListener('click', (e) => {
-    if(!links.classList.contains('open')) return;
-    if(links.contains(e.target) || btn.contains(e.target)) return;
-    links.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  });
-})();
-</script>
 
 </body>
 </html>
